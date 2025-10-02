@@ -1,0 +1,53 @@
+<!-- public/chat.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Covert — Chat</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Layout overrides for chat page */
+    .terminal {
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      height:85vh;
+    }
+    .chat-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:6px 0;
+    }
+    .system { color:var(--muted); font-size:13px; font-style:italic; }
+    .msg { margin:6px 0; }
+    .msg .meta { color:var(--muted); font-size:12px; }
+  </style>
+</head>
+<body>
+  <main class="terminal">
+    <div class="chat-header">
+      <div>
+        <h2 id="roomTitle">Covert</h2>
+        <div id="roomInfo" class="muted"></div>
+      </div>
+      <div style="text-align:right">
+        <div id="usersList" class="muted">Online: -</div>
+        <a href="/" class="link">← Rooms</a>
+      </div>
+    </div>
+
+    <div id="terminalOutput" aria-live="polite"></div>
+
+    <div id="inputRow">
+      <input id="messageInput" autocomplete="off" placeholder="> type message and hit Enter" />
+      <button id="sendBtn">Send</button>
+    </div>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="chat.js"></script>
+</body>
+</html>

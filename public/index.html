@@ -1,0 +1,94 @@
+<!-- public/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Covert</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Room created popup */
+    #roomPopup {
+      display: none;
+      position: fixed;
+      top:50%; left:50%;
+      transform: translate(-50%, -50%);
+      background: var(--panel);
+      border: 1px solid var(--accent);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.8);
+      z-index: 999;
+      width: 280px;
+      text-align: center;
+    }
+    #roomPopup h3 { margin: 0 0 10px; color: var(--accent); }
+    #roomPopup div { margin: 6px 0; word-break: break-all; }
+    #roomPopup .popup-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      gap: 10px;
+    }
+    #roomPopup button {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <main class="terminal">
+    <header class="t-header">
+      <h1>Covert</h1>
+      <p class="hint">Minimalist private group chat</p>
+    </header>
+
+    <section class="box">
+      <form id="createForm" class="form">
+        <label>Create A New Room:</label>
+        <input id="createRoomName" placeholder="Room name (e.g., 'Study Group')" required />
+        <input id="createUsername" placeholder="Your display name (e.g., Fuzail)" />
+        <button type="submit">Create & Join</button>
+      </form>
+    </section>
+
+    <section class="box">
+      <form id="joinForm" class="form">
+        <label>Join Room By Key:</label>
+        <input id="joinRoomKey" placeholder="Room key (e.g., AB12CD)" />
+        <input id="joinUsername" placeholder="Your display name" />
+        <button type="submit">Join</button>
+      </form>
+    </section>
+
+    <section class="box">
+      <label>JOINED ROOMS (local)</label>
+      <ul id="roomsList" class="rooms"></ul>
+      <p class="muted">Rooms you join are saved in your browser (localStorage). Click to open.</p>
+      <button id="clearRooms" class="link">Clear saved rooms</button>
+    </section>
+
+    <footer class="t-footer">
+      <small>Tip: open a new browser / incognito window to simulate another user.</small>
+    </footer>
+  </main>
+
+  <!-- Room Created Popup -->
+  <div id="roomPopup">
+    <h3>Room Created!</h3>
+    <div>Name: <span id="popupRoomName"></span></div>
+    <div>Key: <span id="popupRoomKey"></span></div>
+    <div class="popup-buttons">
+      <button id="copyKeyBtn">Copy Key</button>
+      <button id="proceedBtn">Proceed</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

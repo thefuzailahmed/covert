@@ -1,0 +1,111 @@
+/* public/style.css - CLI inspired */
+:root {
+  --bg: #0b0f0b;
+  --panel: #071009;
+  --text: #b4f1b4;
+  --muted: #6b6f6b;
+  --accent: #8be48b;
+  --prompt: #cfeecf;
+  --mono: "Courier New", Courier, monospace;
+}
+
+* { box-sizing: border-box; }
+html,body { height:100%; margin:0; font-family: var(--mono); background:var(--bg); color:var(--text); }
+
+.terminal {
+  max-width:900px; margin:24px auto; padding:20px; border-radius:8px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.8);
+  border:1px solid rgba(255,255,255,0.03);
+}
+
+.t-header { display:flex; align-items:center; gap:20px; }
+.t-header h1 { margin:0; color:var(--accent); font-size:40px; }
+.hint { margin:0; color:var(--muted); font-size:15px; }
+
+.box { margin-top:18px; padding:12px; background:rgba(255,255,255,0.01); border-radius:6px; border:1px solid var(--accent); }
+.form { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.form input {
+  background:transparent; border:1px solid var(--accent);
+  color:var(--text); padding:8px 10px; border-radius:6px; min-width:180px;
+}
+.form button {
+  padding:8px 12px; border-radius:6px; background:transparent;
+  border:1px solid var(--accent); color:var(--accent);
+  cursor:pointer; font-weight:600; transition:all 0.2s ease-in-out;
+}
+.form button:hover {
+  background:var(--accent); color:var(--bg); box-shadow:0 0 8px var(--accent);
+}
+.form label { width:100%; color:var(--text); font-size:20px; margin-bottom:10px; }
+
+.rooms { list-style:none; padding-left:0; margin:10px 0 12px 0; }
+.rooms li { margin-bottom:10px; }
+.room-btn {
+  background:transparent; border:0; color:var(--prompt);
+  text-decoration:underline; cursor:pointer; font-family:var(--mono);
+}
+
+.muted { color:var(--muted); font-size:12px; margin-top:8px; }
+.link { background:transparent; border:0; color:var(--muted); text-decoration:underline; margin-top:6px; }
+
+.t-footer { margin-top:14px; color:var(--muted); font-size:12px; }
+
+/* === Chat page specific styling === */
+#terminalOutput {
+  flex:1;
+  background:#000;
+  padding:12px;
+  border-radius:6px;
+  overflow-y:auto;
+  color: #b9f1b9;
+  font-family: monospace;
+  border:1px solid rgba(255,255,255,0.03);
+}
+
+#inputRow {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:6px;
+}
+
+#messageInput {
+  flex:1;
+  padding:10px;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,0.04);
+  background:transparent;
+  color:var(--text);
+  font-family:monospace;
+}
+
+#messageInput:focus {
+  outline:none;
+  box-shadow:0 0 6px var(--accent);
+}
+
+/* CLI-style send button */
+#sendBtn {
+  padding:10px 16px;
+  border-radius:6px;
+  background:transparent;
+  border:1px solid var(--accent);
+  color:var(--accent);
+  font-family:var(--mono);
+  font-weight:bold;
+  cursor:pointer;
+  transition: all 0.2s ease-in-out;
+}
+#sendBtn:hover {
+  background:var(--accent);
+  color:var(--bg);
+  box-shadow:0 0 8px var(--accent);
+}
+
+/* responsive tweaks */
+@media (max-width:560px) {
+  .terminal { margin:10px; padding:12px; }
+  .form input { min-width:140px; }
+  .t-header h1 { font-size:20px; }
+}
