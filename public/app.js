@@ -1,5 +1,7 @@
 // public/app.js
 (function () {
+  const BACKEND_URL = 'https://covert-8fy8.onrender.com'; // <-- deployed backend URL
+
   const createForm = document.getElementById('createForm');
   const joinForm = document.getElementById('joinForm');
   const roomsList = document.getElementById('roomsList');
@@ -71,7 +73,7 @@
     const username = document.getElementById('createUsername').value.trim() || 'Anon';
     if (!roomName) return alert('Enter a room name');
     try {
-      const res = await fetch('/create-room', {
+      const res = await fetch(`${BACKEND_URL}/create-room`, { // updated URL
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: roomName })
@@ -131,7 +133,7 @@
     const username = document.getElementById('joinUsername').value.trim() || 'Anon';
     if (!roomKey) return alert('Enter room key');
     try {
-      const res = await fetch(`/room/${roomKey}`);
+      const res = await fetch(`${BACKEND_URL}/room/${roomKey}`); // updated URL
       const js = await res.json();
       if (!js.exists) return alert('Room not found (check the key)');
       addRoomObj(roomKey, js.name, username);
