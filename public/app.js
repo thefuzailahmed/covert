@@ -15,7 +15,9 @@
     try { return JSON.parse(localStorage.getItem('covert_rooms') || '[]'); }
     catch (e) { return []; }
   }
+
   function saveRooms(arr) { localStorage.setItem('covert_rooms', JSON.stringify(arr)); }
+
   function renderRooms() {
     const arr = loadRooms();
     if (!arr.length) {
@@ -48,12 +50,29 @@
     saveRooms(filtered.slice(0, 25));
     renderRooms();
   }
+
   function updateRoomName(roomKey, name) {
     const arr = loadRooms();
     const r = arr.find(x => x.roomKey === roomKey);
     if (r) r.username = name;
     saveRooms(arr);
     renderRooms();
+  }
+
+  async function safeFetchJSON(url, options) {
+    try {
+      const res = await fetch(url, options);
+      const text = await res.text();
+      console.log(`Fetch ${url} response:`, text);
+
+      try { 
+        return JSON.parse(text); 
+      } catch (err) {
+        throw new Error('Server returned non-JSON response. Check console for details.');
+      }
+    } catch (err) {
+      throw err;
+    }
   }
 
   createForm.addEventListener('submit', async (e) => {
@@ -63,20 +82,11 @@
     if (!roomName) return alert('Enter a room name');
 
     try {
-      const res = await fetch('/create-room', {
+      const data = await safeFetchJSON('/create-room', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: roomName })
       });
-
-      const text = await res.text();
-      console.log('Fetch /create-room response:', text);
-
-      let data;
-      try { data = JSON.parse(text); } 
-      catch (err) { 
-        return alert('Server returned invalid JSON. Check console.');
-      }
 
       if (data.roomKey) {
         addRoomObj(data.roomKey, roomName, username);
@@ -87,15 +97,20 @@
 
         copyKeyBtn.onclick = () => {
           navigator.clipboard?.writeText(data.roomKey)
-            .then(() => { copyKeyBtn.textContent = 'Copied!'; setTimeout(() => copyKeyBtn.textContent='Copy Key', 1500); })
+            .then(() => { 
+              copyKeyBtn.textContent = 'Copied!'; 
+              setTimeout(() => copyKeyBtn.textContent='Copy Key', 1500); 
+            })
             .catch(() => alert('Copy failed'));
         };
-        proceedBtn.onclick = () => { window.location.href = `/chat.html?room=${data.roomKey}&name=${encodeURIComponent(username)}` };
+        proceedBtn.onclick = () => { 
+          window.location.href = `/chat.html?room=${data.roomKey}&name=${encodeURIComponent(username)}`;
+        };
       } else {
         alert('Failed to create room');
       }
     } catch (err) {
-      alert('Network error: ' + err.message);
+      alert('Network / Server error: ' + err.message);
     }
   });
 
@@ -106,19 +121,12 @@
     if (!roomKey) return alert('Enter room key');
 
     try {
-      const res = await fetch(`/room/${roomKey}`);
-      const text = await res.text();
-      console.log('Fetch /room response:', text);
-
-      let js;
-      try { js = JSON.parse(text); } 
-      catch (err) { return alert('Server returned invalid JSON. Check console.'); }
-
+      const js = await safeFetchJSON(`/room/${roomKey}`);
       if (!js.exists) return alert('Room not found (check the key)');
       addRoomObj(roomKey, js.name, username);
       window.location.href = `/chat.html?room=${roomKey}&name=${encodeURIComponent(username)}`;
     } catch (err) {
-      alert('Network error: ' + err.message);
+      alert('Network / Server error: ' + err.message);
     }
   });
 
